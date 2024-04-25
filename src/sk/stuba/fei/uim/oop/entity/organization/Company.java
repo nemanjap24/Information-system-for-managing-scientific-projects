@@ -3,18 +3,19 @@ package sk.stuba.fei.uim.oop.entity.organization;
 import sk.stuba.fei.uim.oop.entity.grant.ProjectInterface;
 import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
 
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Company implements OrganizationInterface{
     private String name;
-    private int privateFunds;
-    private Set<PersonInterface> employees;
+    private Map<PersonInterface, Integer> employees;
     private Set<ProjectInterface> projects;
 
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
@@ -24,47 +25,56 @@ public class Company implements OrganizationInterface{
 
     @Override
     public void addEmployee(PersonInterface p, int employment) {
-        employees.add(p);
+        employees.put(p, employment);
 
     }
 
     @Override
     public Set<PersonInterface> getEmployees() {
-        return null;
+        return new HashSet<>(employees.keySet());
     }
 
     @Override
     public int getEmploymentForEmployee(PersonInterface p) {
+        //todo
         return 0;
     }
 
     @Override
     public Set<ProjectInterface> getAllProjects() {
-        return null;
+        return projects;
     }
 
     @Override
     public Set<ProjectInterface> getRunningProjects(int year) {
-        return null;
+        Set<ProjectInterface> runningProjects = new HashSet<>();
+        for(ProjectInterface project : projects){
+            if(project.getStartingYear() <= year && project.getEndingYear() >= year){
+                runningProjects.add(project);
+            }
+        }
+        return projects;
     }
 
     @Override
     public void registerProjectInOrganization(ProjectInterface project) {
-
+        projects.add(project);
     }
 
     @Override
     public int getProjectBudget(ProjectInterface pi) {
+        //todo
         return 0;
     }
 
     @Override
     public int getBudgetForAllProjects() {
+        //todo
         return 0;
     }
 
     @Override
     public void projectBudgetUpdateNotification(ProjectInterface pi, int year, int budgetForYear) {
-
+        //todo
     }
 }

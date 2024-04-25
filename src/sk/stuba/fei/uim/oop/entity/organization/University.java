@@ -9,7 +9,6 @@ import java.util.Set;
 
 public class University implements OrganizationInterface{
     private String name;
-    private int publicFunds;
     private Map<PersonInterface, Integer> employees;
     private Set<ProjectInterface> projects;
 
@@ -28,6 +27,7 @@ public class University implements OrganizationInterface{
 
     @Override
     public void addEmployee(PersonInterface p, int employment) {
+
         employees.put(p, employment);
     }
 
@@ -38,6 +38,7 @@ public class University implements OrganizationInterface{
 
     @Override
     public int getEmploymentForEmployee(PersonInterface p) {
+        //todo
         return 0;
     }
 
@@ -64,16 +65,18 @@ public class University implements OrganizationInterface{
 
     @Override
     public int getProjectBudget(ProjectInterface pi) {
+        //todo
         return 0;
     }
 
     @Override
     public int getBudgetForAllProjects() {
+        //todo
         return 0;
     }
 
     @Override
     public void projectBudgetUpdateNotification(ProjectInterface pi, int year, int budgetForYear) {
-
+        //todo
     }
 }
