@@ -1,5 +1,8 @@
 package sk.stuba.fei.uim.oop.entity.grant;
 
+import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
+import sk.stuba.fei.uim.oop.utility.Constants;
+
 import java.util.*;
 
 public class Grant implements GrantInterface{
@@ -11,7 +14,14 @@ public class Grant implements GrantInterface{
     private int remainingBudget;
     private Queue<ProjectInterface> registeredProjects;
     private GrantState state;
+    private Map<ProjectInterface, Integer> projectBudgets;
 
+
+
+    public Grant(){
+
+        registeredProjects = new LinkedList<>();
+    }
 
     @Override
     public String getIdentifier() {
@@ -55,27 +65,49 @@ public class Grant implements GrantInterface{
 
     @Override
     public int getRemainingBudget() {
-
+        return remainingBudget;
         //TODO: implement this method
-        return 0;
     }
 
     @Override
     public int getBudgetForProject(ProjectInterface project) {
-        //TODO: implement this method
-        return 0;
+        return project.getTotalBudget();
+    }
+
+    private boolean controlEmployment(ProjectInterface project) {
+        for (PersonInterface participant : project.getAllParticipants()) {
+            for (int year = project.getStartingYear(); year <= project.getEndingYear(); year++) {
+                int totalEmployment = 0;
+                for (GrantInterface grant : agency.getAllGrants()) {
+                    if (grant.getState() == GrantState.CLOSED) {
+                        for (ProjectInterface registeredProject : grant.getRegisteredProjects()) {
+                            if (registeredProject.getAllParticipants().contains(participant) &&
+                                    year >= registeredProject.getStartingYear() && year <= registeredProject.getEndingYear()) {
+                                totalEmployment += registeredProject.getApplicant().getEmploymentForEmployee(participant);
+                            }
+                        }
+                    }
+                }
+                totalEmployment += project.getApplicant().getEmploymentForEmployee(participant);
+                if (totalEmployment > Constants.MAX_EMPLOYMENT_PER_AGENCY) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
     public boolean registerProject(ProjectInterface project) {
-        if(getState() == GrantState.STARTED && project.getStartingYear() == getYear()) {
-            registeredProjects.add(project);
-            return true;
+        if(getState() != GrantState.STARTED || project.getStartingYear() != getYear()) {
+            return false;
         }
-        //TODO: implement this method, maybe its already implemented
-        return false;
+        if(project.getApplicant() == null || project.getAllParticipants().isEmpty()){
+            return false;
+        }
+        registeredProjects.add(project);
+        return true;
     }
-
 
     @Override
     public Set<ProjectInterface> getRegisteredProjects() {
@@ -90,28 +122,49 @@ public class Grant implements GrantInterface{
     @Override
     public void callForProjects() {
         state = GrantState.STARTED;
-        //TODO: implement this method, maybe it's already implemented
     }
 
     @Override
     public void evaluateProjects() {
-        //TODO: implement this method
         state = GrantState.EVALUATING;
 
-//        for( ProjectInterface project : registeredProjects){
-//            project.getAllParticipants().forEach(participant ->{
-//                if(participant.getEmployers().forEach(employerOrganization ->{
-//                    employerOrganization.getEmploymentForEmployee(participant)
-//                    //TODO skontati sta i kako, ali preko agenture treba valjda
-//                    // da se dobije uvazok za projekat
-//                })
-//            });)
-//        })
+        List<ProjectInterface> eligibleProjects = new ArrayList<>();
+
+        for (ProjectInterface project : registeredProjects) {
+            if (controlEmployment(project)) {
+                eligibleProjects.add(project);
+            }
+        }
+
+        int numberOfEligibleProjects = eligibleProjects.size();
+
+        if(numberOfEligibleProjects > 1){
+            numberOfEligibleProjects/=2;
+        }
+        if(numberOfEligibleProjects >= 1){
+            int budgetPerProject = budget / numberOfEligibleProjects;
+            for (int i = 0; i < numberOfEligibleProjects; i++) {
+                ProjectInterface project = eligibleProjects.get(i);
+                //int projectLength = project.getEndingYear() - project.getStartingYear();
+                for(int j = 0; j < Constants.PROJECT_DURATION_IN_YEARS; j++){
+                    project.setBudgetForYear(project.getStartingYear() + j, budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS);
+                }
+            }
+        }
+
+
     }
 
     @Override
     public void closeGrant() {
+        state = GrantState.CLOSED;
+    }
 
+    public void printAllRegisteredProjects(){
+        System.out.println("Registered projects for grant: " + identifier + " are: ");
+        for(ProjectInterface project : registeredProjects){
+            System.out.println(project.getProjectName());
+        }
     }
 
 }

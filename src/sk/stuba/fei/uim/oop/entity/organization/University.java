@@ -3,6 +3,7 @@ package sk.stuba.fei.uim.oop.entity.organization;
 import sk.stuba.fei.uim.oop.entity.grant.ProjectInterface;
 import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -13,6 +14,10 @@ public class University implements OrganizationInterface{
     private Set<ProjectInterface> projects;
 
 
+    public University(){
+        this.projects = new HashSet<>();
+        this.employees = new HashMap<>();
+    }
 
     @Override
     public String getName() {
@@ -27,7 +32,6 @@ public class University implements OrganizationInterface{
 
     @Override
     public void addEmployee(PersonInterface p, int employment) {
-
         employees.put(p, employment);
     }
 
@@ -38,8 +42,7 @@ public class University implements OrganizationInterface{
 
     @Override
     public int getEmploymentForEmployee(PersonInterface p) {
-        //todo
-        return 0;
+        return employees.get(p);
     }
 
     @Override
@@ -65,18 +68,21 @@ public class University implements OrganizationInterface{
 
     @Override
     public int getProjectBudget(ProjectInterface pi) {
-        //todo
-        return 0;
+        return pi.getTotalBudget();
     }
 
     @Override
     public int getBudgetForAllProjects() {
-        //todo
-        return 0;
+        int totalBudget = 0;
+        for(ProjectInterface project : projects){
+            totalBudget += project.getTotalBudget();
+        }
+        return totalBudget;
     }
 
     @Override
     public void projectBudgetUpdateNotification(ProjectInterface pi, int year, int budgetForYear) {
-        //todo
+        //todo: maybe it's already implemented
+        pi.setBudgetForYear(year, budgetForYear);
     }
 }

@@ -32,17 +32,23 @@ public class Main {
         Jozef.setName("Jozef");
         Anna.setName("Anna");
         Karol.setName("Karol");
+
         STU.addEmployee(Peter, 2);
         Peter.addEmployer(STU);
+
         STU.addEmployee(Jozef, 3);
         Jozef.addEmployer(STU);
+
         UK.addEmployee(Anna, 3);
         UK.addEmployee(Karol, 1);
+
         Anna.addEmployer(UK);
         Karol.addEmployer(UK);
+
         ESET.addEmployee(Peter, 4);
         ESET.addEmployee(Anna, 2);
         ESET.addEmployee(Karol, 1);
+
         Peter.addEmployer(ESET);
         Anna.addEmployer(ESET);
         Karol.addEmployer(ESET);
@@ -52,14 +58,18 @@ public class Main {
         GrantInterface grant1 = new Grant();
         GrantInterface grant2 = new Grant();
         ProjectInterface P1 = new Project();
+        P1.setProjectName("P1");
         ProjectInterface P2 = new Project();
+        P2.setProjectName("P2");
 
         grant1.setIdentifier("grant1");
         grant1.setBudget(100000);
         grant1.setAgency(APVV);
+
         grant2.setIdentifier("grant2");
         grant2.setBudget(8000);
         grant2.setAgency(VEGA);
+
         APVV.addGrant(grant1, 2022);
         VEGA.addGrant(grant2, 2023);
 
@@ -71,6 +81,7 @@ public class Main {
         P2.addParticipant(Karol);
         P2.addParticipant(Anna);
         P2.setStartingYear(2023);
+
         grant1.callForProjects();
         grant2.callForProjects();
         grant1.registerProject(P1);
@@ -79,6 +90,7 @@ public class Main {
         grant2.evaluateProjects();
         grant1.closeGrant();
         grant2.closeGrant();
+
         System.out.println(P1.getTotalBudget());
         System.out.println(P2.getTotalBudget());
         System.out.println(P1.getBudgetForYear(2022));
@@ -89,11 +101,13 @@ public class Main {
         System.out.println("UK PROJECT: " + UK.getProjectBudget(P2));
 
         GrantInterface grant3 = new Grant();
+        grant3.setIdentifier("grant3");
         grant3.setAgency(APVV);
         grant3.setBudget(100000);
         grant3.setYear(2024);
         APVV.addGrant(grant3, 2024);
         ProjectInterface P3 = new Project();
+        P3.setProjectName("P3");
         P3.setApplicant(ESET);
         P3.addParticipant(Peter);
         P3.setStartingYear(2024);
@@ -107,25 +121,30 @@ public class Main {
         System.out.println("ESET PROJECT: " + ESET.getProjectBudget(P3));
 
         GrantInterface grant4 = new Grant();
+        grant4.setIdentifier("grant4");
         grant4.setAgency(VEGA);
         grant4.setBudget(8000);
         grant4.setYear(2024);
         VEGA.addGrant(grant4, 2024);
         ProjectInterface P4 = new Project();
+        P4.setProjectName("P4");
         P4.setApplicant(ESET);
         P4.addParticipant(Karol);
         P4.addParticipant(Anna);
         P4.setStartingYear(2024);
         ProjectInterface P5 = new Project();
+        P5.setProjectName("P5");
         P5.setApplicant(STU);
         P5.addParticipant(Peter);
         P5.addParticipant(Jozef);
         P5.setStartingYear(2024);
         ProjectInterface P6 = new Project();
+        P6.setProjectName("P6");
         P6.setApplicant(UK);
         P6.addParticipant(Anna);
         P6.setStartingYear(2024);
         ProjectInterface P7 = new Project();
+        P7.setProjectName("P7");
         P7.setApplicant(UK);
         P7.addParticipant(Karol);
         P7.setStartingYear(2024);
