@@ -19,7 +19,7 @@ public class Grant implements GrantInterface{
 
 
     public Grant(){
-
+        projectBudgets = new HashMap<>();
         registeredProjects = new LinkedList<>();
     }
 
@@ -71,7 +71,9 @@ public class Grant implements GrantInterface{
 
     @Override
     public int getBudgetForProject(ProjectInterface project) {
-        return project.getTotalBudget();
+        if(!(projectBudgets.get(project) == null))
+            return projectBudgets.get(project);
+        else return 0;
     }
 
     private boolean controlEmployment(ProjectInterface project) {
@@ -146,9 +148,12 @@ public class Grant implements GrantInterface{
             for (int i = 0; i < numberOfEligibleProjects; i++) {
                 ProjectInterface project = eligibleProjects.get(i);
                 for(int j = 0; j < Constants.PROJECT_DURATION_IN_YEARS; j++){
-                    project.setBudgetForYear(project.getStartingYear() + j, budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS);
-                    remainingBudget -= budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS;
+                    int budgetPerProjectPerYear = budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS;
+                    project.setBudgetForYear(project.getStartingYear() + j, budgetPerProjectPerYear);
+                    project.getApplicant().projectBudgetUpdateNotification(project, year, budgetPerProjectPerYear);
+                    remainingBudget -= budgetPerProjectPerYear;
                 }
+                projectBudgets.put(project, budgetPerProject);
             }
         }
     }
