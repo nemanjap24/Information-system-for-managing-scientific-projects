@@ -12,15 +12,20 @@ public class Grant implements GrantInterface{
     private AgencyInterface agency;
     private int budget;
     private int remainingBudget;
-    private Queue<ProjectInterface> registeredProjects;
     private GrantState state;
+    private Queue<ProjectInterface> registeredProjects;
     private Map<ProjectInterface, Integer> projectBudgets;
 
 
 
     public Grant(){
-        projectBudgets = new HashMap<>();
-        registeredProjects = new LinkedList<>();
+        this.agency = null;
+        this.budget = 0;
+        this.remainingBudget = 0;
+        this.state = null;
+        this.registeredProjects = new LinkedList<>();
+        this.projectBudgets = new HashMap<>();
+
     }
 
     @Override
@@ -133,9 +138,7 @@ public class Grant implements GrantInterface{
             return;
         }
         state = GrantState.EVALUATING;
-
         List<ProjectInterface> eligibleProjects = new ArrayList<>();
-
         for (ProjectInterface project : registeredProjects) {
             if (controlEmployment(project)) {
                 eligibleProjects.add(project);
@@ -173,7 +176,5 @@ public class Grant implements GrantInterface{
                 }
             }
         }
-
     }
-
 }

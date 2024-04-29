@@ -4,25 +4,20 @@ import sk.stuba.fei.uim.oop.entity.organization.OrganizationInterface;
 import sk.stuba.fei.uim.oop.entity.people.PersonInterface;
 import sk.stuba.fei.uim.oop.utility.Constants;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Project implements ProjectInterface {
 
     private String projectName;
     private int startingYear;
-    private Map<Integer, Integer> budgetPerYear;
-    private Set<PersonInterface> participants;
+    private final Map<Integer, Integer> budgetPerYear;
+    private final Set<PersonInterface> participants;
     private OrganizationInterface applicant;
 
     public Project(){
-        budgetPerYear = new HashMap<>();
-        participants = new HashSet<>();
+        this.budgetPerYear = new HashMap<>();
+        this.participants = new HashSet<>();
     }
-
-
 
     @Override
     public String getProjectName() {
@@ -71,7 +66,6 @@ public class Project implements ProjectInterface {
         return totalBudget;
     }
 
-    //Riešiteľa, ktorý nie je zamestnancom podávajúcej organizácie, nie je možné pridať do projektu.
     @Override
     public void addParticipant(PersonInterface participant) {
         if(applicant.getEmployees().contains(participant)){
@@ -93,4 +87,18 @@ public class Project implements ProjectInterface {
     public void setApplicant(OrganizationInterface applicant) {
         this.applicant = applicant;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Project project = (Project) o;
+        return Objects.equals(projectName, project.projectName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(projectName);
+    }
+
 }

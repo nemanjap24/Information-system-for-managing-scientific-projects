@@ -15,7 +15,7 @@ public class Company implements OrganizationInterface {
     public Company() {
         this.projects = new LinkedHashSet<>();
         this.employees = new HashMap<>();
-        companyBudget = Constants.COMPANY_INIT_OWN_RESOURCES;
+        this.companyBudget = Constants.COMPANY_INIT_OWN_RESOURCES;
     }
 
     @Override
@@ -90,7 +90,18 @@ public class Company implements OrganizationInterface {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Company company = (Company) o;
+        return Objects.equals(name, company.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
 
 
