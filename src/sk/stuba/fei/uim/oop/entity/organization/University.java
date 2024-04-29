@@ -58,7 +58,7 @@ public class University implements OrganizationInterface{
                 runningProjects.add(project);
             }
         }
-        return projects;
+        return runningProjects;
     }
 
     @Override
@@ -82,7 +82,6 @@ public class University implements OrganizationInterface{
 
     @Override
     public void projectBudgetUpdateNotification(ProjectInterface pi, int year, int budgetForYear) {
-        //todo: maybe it's already implemented
         pi.setBudgetForYear(year, budgetForYear);
     }
 }

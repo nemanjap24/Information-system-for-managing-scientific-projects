@@ -25,7 +25,7 @@ public class Company implements OrganizationInterface{
 
     @Override
     public void setName(String name) {
-
+        this.name = name;
     }
 
     @Override
@@ -66,19 +66,20 @@ public class Company implements OrganizationInterface{
 
     @Override
     public int getProjectBudget(ProjectInterface pi) {
-        if(projects.isEmpty()){
-            return 0;
-        }
-        int totalBudget = pi.getTotalBudget();
-        int budget = companyBudget;
-        for (int i = 0; i < pi.getEndingYear()-pi.getStartingYear() + 1; i++){
-            int agencyBudget = pi.getBudgetForYear(pi.getStartingYear()+i);
-            if(budget >= agencyBudget) {
-                budget -= agencyBudget;
-                totalBudget += agencyBudget;
-            }
-        }
-        return totalBudget;
+//        if(projects.isEmpty()){
+//            return 0;
+//        }
+//        int totalBudget = pi.getTotalBudget();
+//        int budget = companyBudget;
+//        for (int i = 0; i < pi.getEndingYear()-pi.getStartingYear() + 1; i++){
+//            int agencyBudget = pi.getBudgetForYear(pi.getStartingYear()+i);
+//            if(budget >= agencyBudget) {
+//                budget -= agencyBudget;
+//                totalBudget += agencyBudget;
+//            }
+//        }
+//        return totalBudget;
+        return pi.getTotalBudget();
     }
 
     @Override
@@ -92,6 +93,13 @@ public class Company implements OrganizationInterface{
 
     @Override
     public void projectBudgetUpdateNotification(ProjectInterface pi, int year, int budgetForYear) {
-        pi.setBudgetForYear(year, budgetForYear);
+        int grantBudget = pi.getBudgetForYear(year);
+        if(companyBudget >= grantBudget){
+            companyBudget -= grantBudget;
+            pi.setBudgetForYear(year, budgetForYear + grantBudget);
+        } else{
+            pi.setBudgetForYear(year, budgetForYear + companyBudget);
+            companyBudget = 0;
+        }
     }
 }

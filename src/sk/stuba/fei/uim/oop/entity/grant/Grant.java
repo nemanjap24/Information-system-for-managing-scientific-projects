@@ -61,12 +61,12 @@ public class Grant implements GrantInterface{
     @Override
     public void setBudget(int budget) {
         this.budget = budget;
+        this.remainingBudget = budget;
     }
 
     @Override
     public int getRemainingBudget() {
         return remainingBudget;
-        //TODO: implement this method
     }
 
     @Override
@@ -145,26 +145,16 @@ public class Grant implements GrantInterface{
             int budgetPerProject = budget / numberOfEligibleProjects;
             for (int i = 0; i < numberOfEligibleProjects; i++) {
                 ProjectInterface project = eligibleProjects.get(i);
-                //int projectLength = project.getEndingYear() - project.getStartingYear();
                 for(int j = 0; j < Constants.PROJECT_DURATION_IN_YEARS; j++){
                     project.setBudgetForYear(project.getStartingYear() + j, budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS);
+                    remainingBudget -= budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS;
                 }
             }
         }
-
-
     }
-
     @Override
     public void closeGrant() {
         state = GrantState.CLOSED;
-    }
-
-    public void printAllRegisteredProjects(){
-        System.out.println("Registered projects for grant: " + identifier + " are: ");
-        for(ProjectInterface project : registeredProjects){
-            System.out.println(project.getProjectName());
-        }
     }
 
 }
