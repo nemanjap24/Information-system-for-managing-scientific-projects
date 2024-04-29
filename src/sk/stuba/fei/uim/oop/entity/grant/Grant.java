@@ -123,11 +123,15 @@ public class Grant implements GrantInterface{
 
     @Override
     public void callForProjects() {
-        state = GrantState.STARTED;
+        if(state == null)
+            state = GrantState.STARTED;
     }
 
     @Override
     public void evaluateProjects() {
+        if(state==GrantState.CLOSED || state == null){
+            return;
+        }
         state = GrantState.EVALUATING;
 
         List<ProjectInterface> eligibleProjects = new ArrayList<>();
@@ -150,7 +154,6 @@ public class Grant implements GrantInterface{
                 for(int j = 0; j < Constants.PROJECT_DURATION_IN_YEARS; j++){
                     int budgetPerProjectPerYear = budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS;
                     project.setBudgetForYear(project.getStartingYear() + j, budgetPerProjectPerYear);
-                    project.getApplicant().projectBudgetUpdateNotification(project, year, budgetPerProjectPerYear);
                     remainingBudget -= budgetPerProjectPerYear;
                 }
                 projectBudgets.put(project, budgetPerProject);
@@ -159,7 +162,18 @@ public class Grant implements GrantInterface{
     }
     @Override
     public void closeGrant() {
-        state = GrantState.CLOSED;
+        if(state == GrantState.EVALUATING) {
+            state = GrantState.CLOSED;
+            this.agency.addGrant(this,this.year);
+            for(ProjectInterface project : registeredProjects){
+                int yearlyBudget = project.getTotalBudget() / Constants.PROJECT_DURATION_IN_YEARS;
+                this.projectBudgets.put(project, yearlyBudget * Constants.PROJECT_DURATION_IN_YEARS);
+                for (int year = 0; year < Constants.PROJECT_DURATION_IN_YEARS; year++) {
+                    project.getApplicant().projectBudgetUpdateNotification(project, this.year + year, yearlyBudget);
+                }
+            }
+        }
+
     }
 
 }

@@ -23,13 +23,9 @@ public class Agency implements AgencyInterface{
 
     @Override
     public void addGrant(GrantInterface gi, int year) {
-        // Check if there are already grants for this year
         if (!grants.containsKey(year)) {
-            // If not, create a new list
             grants.put(year, new ArrayList<>());
         }
-
-        // Add the grant to the list for this year
         grants.get(year).add(gi);
     }
 

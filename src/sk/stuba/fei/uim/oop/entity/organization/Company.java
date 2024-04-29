@@ -6,13 +6,13 @@ import sk.stuba.fei.uim.oop.utility.Constants;
 
 import java.util.*;
 
-public class Company implements OrganizationInterface{
+public class Company implements OrganizationInterface {
     private String name;
     private Map<PersonInterface, Integer> employees;
     private Set<ProjectInterface> projects;
     private int companyBudget;
 
-    public Company(){
+    public Company() {
         this.projects = new LinkedHashSet<>();
         this.employees = new HashMap<>();
         companyBudget = Constants.COMPANY_INIT_OWN_RESOURCES;
@@ -51,8 +51,8 @@ public class Company implements OrganizationInterface{
     @Override
     public Set<ProjectInterface> getRunningProjects(int year) {
         Set<ProjectInterface> runningProjects = new HashSet<>();
-        for(ProjectInterface project : projects){
-            if(project.getStartingYear() <= year && project.getEndingYear() >= year){
+        for (ProjectInterface project : projects) {
+            if (project.getStartingYear() <= year && project.getEndingYear() >= year) {
                 runningProjects.add(project);
             }
         }
@@ -72,7 +72,7 @@ public class Company implements OrganizationInterface{
     @Override
     public int getBudgetForAllProjects() {
         int totalBudget = 0;
-        for(ProjectInterface project : projects){
+        for (ProjectInterface project : projects) {
             totalBudget += project.getTotalBudget();
         }
         return totalBudget;
@@ -89,4 +89,17 @@ public class Company implements OrganizationInterface{
             companyBudget = 0;
         }
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
