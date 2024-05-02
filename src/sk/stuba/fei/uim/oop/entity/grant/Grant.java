@@ -177,4 +177,17 @@ public class Grant implements GrantInterface{
             }
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Grant grant = (Grant) o;
+        return Objects.equals(identifier, grant.identifier);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifier);
+    }
 }

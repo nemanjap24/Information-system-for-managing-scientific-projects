@@ -11,6 +11,7 @@ public class Agency implements AgencyInterface{
         this.grants = new HashMap<>();
     }
 
+
     @Override
     public String getName() {
         return name;
@@ -44,5 +45,17 @@ public class Agency implements AgencyInterface{
             return new HashSet<>(grants.get(year));
         }
         return new HashSet<>();
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Agency agency = (Agency) o;
+        return Objects.equals(name, agency.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
