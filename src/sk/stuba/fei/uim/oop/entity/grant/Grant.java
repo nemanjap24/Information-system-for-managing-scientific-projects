@@ -154,29 +154,26 @@ public class Grant implements GrantInterface{
             int budgetPerProject = budget / numberOfEligibleProjects;
             for (int i = 0; i < numberOfEligibleProjects; i++) {
                 ProjectInterface project = eligibleProjects.get(i);
-                for(int j = 0; j < Constants.PROJECT_DURATION_IN_YEARS; j++){
-                    int budgetPerProjectPerYear = budgetPerProject / Constants.PROJECT_DURATION_IN_YEARS;
-                    project.setBudgetForYear(project.getStartingYear() + j, budgetPerProjectPerYear);
-                    remainingBudget -= budgetPerProjectPerYear;
-                }
                 projectBudgets.put(project, budgetPerProject);
+                remainingBudget-=budgetPerProject;
             }
         }
     }
-    @Override
-    public void closeGrant() {
-        if(state == GrantState.EVALUATING) {
-            state = GrantState.CLOSED;
-            this.agency.addGrant(this,this.year);
-            for(ProjectInterface project : registeredProjects){
-                int yearlyBudget = project.getTotalBudget() / Constants.PROJECT_DURATION_IN_YEARS;
-                this.projectBudgets.put(project, yearlyBudget * Constants.PROJECT_DURATION_IN_YEARS);
-                for (int year = 0; year < Constants.PROJECT_DURATION_IN_YEARS; year++) {
-                    project.getApplicant().projectBudgetUpdateNotification(project, this.year + year, yearlyBudget);
-                }
+@Override
+public void closeGrant() {
+    if(state == GrantState.EVALUATING) {
+        state = GrantState.CLOSED;
+        this.agency.addGrant(this,this.year);
+        for(ProjectInterface project : registeredProjects){
+            int yearlyBudget = this.getBudgetForProject(project) / Constants.PROJECT_DURATION_IN_YEARS;
+            //this.projectBudgets.put(project, yearlyBudget * Constants.PROJECT_DURATION_IN_YEARS);
+            for (int year = 0; year < Constants.PROJECT_DURATION_IN_YEARS; year++) {
+                project.getApplicant().projectBudgetUpdateNotification(project, this.year + year, yearlyBudget);
             }
+
         }
     }
+}
 
     @Override
     public boolean equals(Object o) {

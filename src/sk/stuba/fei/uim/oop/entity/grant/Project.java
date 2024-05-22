@@ -49,7 +49,12 @@ public class Project implements ProjectInterface {
 
     @Override
     public int getBudgetForYear(int year) {
-        return budgetPerYear.get(year);
+        try{
+            return budgetPerYear.get(year);
+        }catch (Exception ignored){
+
+        }
+        return 0;
     }
 
     @Override
@@ -68,8 +73,12 @@ public class Project implements ProjectInterface {
 
     @Override
     public void addParticipant(PersonInterface participant) {
-        if(applicant.getEmployees().contains(participant)){
-            participants.add(participant);
+        try{
+            if(applicant.getEmployees().contains(participant)){
+                participants.add(participant);
+            }
+        }
+        catch(Exception ignored){
         }
     }
 

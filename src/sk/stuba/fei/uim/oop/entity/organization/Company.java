@@ -81,7 +81,7 @@ public class Company implements OrganizationInterface {
     @Override
     public void projectBudgetUpdateNotification(ProjectInterface pi, int year, int budgetForYear) {
         int grantBudget = pi.getBudgetForYear(year);
-        if(companyBudget >= grantBudget){
+        if(companyBudget >= budgetForYear){
             companyBudget -= grantBudget;
             pi.setBudgetForYear(year, budgetForYear + grantBudget);
         } else{
